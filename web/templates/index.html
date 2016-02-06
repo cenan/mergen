@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Mergen</title>
+
+	<link rel="stylesheet" href="/static/css/board.css" />
+
+	<script src="/static/js/vendor/jquery.min.js" type="text/javascript"></script>
+	<script src="/static/js/vendor/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="/static/js/vendor/underscore-min.js" type="text/javascript"></script>
+	<script src="/static/js/app/board_model.js"></script>
+	<script src="/static/js/app/main.js"></script>
+
+	<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico"/>
+</head>
+<body>
+	<div class="w">
+		<table id="board"></table>
+		<div class="move-list"></div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="status"></div>
+	<audio id="audio">
+		<source src="/static/sounds/click.mp3" type="audio/mp3" />
+		<source src="/static/sounds/click.ogg" type="audio/ogg" />
+	</audio>
+</body>
+</html>

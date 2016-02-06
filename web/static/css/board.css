@@ -1,0 +1,77 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	vertical-align: baseline;
+}
+
+div.w {
+}
+
+div.clearfix {
+	clear: both;
+}
+
+div.move-list {
+	float: left;
+	width: 100px;
+	height: 522px;
+	overflow: scroll;
+}
+
+table#board {
+	border-collapse: collapse;
+	float: left;
+}
+
+td.cell {
+	border: none;
+	width: 64px;
+	height: 64px;
+	max-height: 64px;
+	position: relative;
+	vertical-align: top;
+	background-color: #eee;
+	z-index: 99;
+}
+
+td.black-cell {
+	background-color: #493;
+}
+
+td.hoverCell {
+}
+
+td.movableCell {
+	background-color: #963;
+}
+
+.piece {
+	float: left;
+	z-index: 100;
+}
+
+
+div.status {
+	background-color: #eee;
+}
+
+/** {
+	margin: 0px;
+	padding: 0px;
+}
+*//*
+div.game {
+	margin: 20px;
+	background-color: #eee;
+	width: 230px;
+	line-height: 20px;
+}
+
+div.box {
+	background-color: red;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	margin-left: 3px;
+}*/
+
