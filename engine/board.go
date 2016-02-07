@@ -119,6 +119,18 @@ func (b *Board) findKingMoves(col int8, row int8, c Color) []Move {
 	if b.isEmptyOrOppositeColor(col+1, row+1, c) {
 		moves = append(moves, Move{col, row, col + 1, row + 1})
 	}
+	if c == WHITE && col == 4 && row == 7 && b.getSquare(7, 7) == WHITE_ROOK && b.isEmptySquare(col+1, row) && b.isEmptySquare(col+2, row) {
+		moves = append(moves, Move{col, row, col + 2, row})
+	}
+	if c == WHITE && col == 4 && row == 7 && b.getSquare(0, 7) == WHITE_ROOK && b.isEmptySquare(col-1, row) && b.isEmptySquare(col-2, row) && b.isEmptySquare(col-3, row) {
+		moves = append(moves, Move{col, row, col - 2, row})
+	}
+	if c == BLACK && col == 4 && row == 0 && b.getSquare(7, 0) == BLACK_ROOK && b.isEmptySquare(col+1, row) && b.isEmptySquare(col+2, row) {
+		moves = append(moves, Move{col, row, col + 2, row})
+	}
+	if c == BLACK && col == 4 && row == 7 && b.getSquare(0, 7) == BLACK_ROOK && b.isEmptySquare(col-1, row) && b.isEmptySquare(col-2, row) && b.isEmptySquare(col-3, row) {
+		moves = append(moves, Move{col, row, col - 2, row})
+	}
 	return moves
 }
 
@@ -307,6 +319,22 @@ func (b *Board) MakeMove(m Move) int8 {
 	piece := b.getSquare(m.FromCol, m.FromRow)
 	b.setSquare(m.FromCol, m.FromRow, EMPTY_SQUARE)
 	b.setSquare(m.ToCol, m.ToRow, piece)
+	if piece == WHITE_KING && m.FromRow == 7 && m.FromCol == 4 && m.ToCol == 6 {
+		b.setSquare(5, 7, WHITE_ROOK)
+		b.setSquare(7, 7, EMPTY_SQUARE)
+	}
+	if piece == WHITE_KING && m.FromRow == 7 && m.FromCol == 4 && m.ToCol == 2 {
+		b.setSquare(3, 7, WHITE_ROOK)
+		b.setSquare(0, 7, EMPTY_SQUARE)
+	}
+	if piece == BLACK_KING && m.FromRow == 0 && m.FromCol == 4 && m.ToCol == 6 {
+		b.setSquare(5, 0, BLACK_ROOK)
+		b.setSquare(7, 0, EMPTY_SQUARE)
+	}
+	if piece == WHITE_KING && m.FromRow == 0 && m.FromCol == 4 && m.ToCol == 2 {
+		b.setSquare(3, 0, BLACK_ROOK)
+		b.setSquare(0, 0, EMPTY_SQUARE)
+	}
 	return capturedPiece
 }
 
@@ -314,4 +342,20 @@ func (b *Board) reverseMove(m Move, capturedPiece int8) {
 	piece := b.getSquare(m.ToCol, m.ToRow)
 	b.setSquare(m.FromCol, m.FromRow, piece)
 	b.setSquare(m.ToCol, m.ToRow, capturedPiece)
+	if piece == WHITE_KING && m.FromRow == 7 && m.FromCol == 4 && m.ToCol == 6 {
+		b.setSquare(7, 7, WHITE_ROOK)
+		b.setSquare(5, 7, EMPTY_SQUARE)
+	}
+	if piece == WHITE_KING && m.FromRow == 7 && m.FromCol == 4 && m.ToCol == 2 {
+		b.setSquare(0, 7, WHITE_ROOK)
+		b.setSquare(3, 7, EMPTY_SQUARE)
+	}
+	if piece == BLACK_KING && m.FromRow == 0 && m.FromCol == 4 && m.ToCol == 6 {
+		b.setSquare(7, 0, BLACK_ROOK)
+		b.setSquare(5, 0, EMPTY_SQUARE)
+	}
+	if piece == WHITE_KING && m.FromRow == 0 && m.FromCol == 4 && m.ToCol == 2 {
+		b.setSquare(0, 0, BLACK_ROOK)
+		b.setSquare(3, 0, EMPTY_SQUARE)
+	}
 }

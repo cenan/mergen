@@ -36,6 +36,7 @@ func (client *Client) Read() {
 				panic(err)
 			}
 			fmt.Println("User moved: ", move)
+			client.send <- Message{Name: "move", Data: move.String()}
 			client.board.MakeMove(move)
 			start := time.Now()
 			scr, moves := engine.ParallelNegaMax(client.board, 4, engine.BLACK)

@@ -72,6 +72,7 @@ function move(event, ui) {
         cancel_move();
         return;
     }
+    //cancel_move();
     var from_square = $(ui.draggable).data('origin-square');
     var to_square = $(this).attr("id");
     $(".move-list").append($("<div />").text(from_square + ' ' + to_square));
@@ -83,15 +84,15 @@ function move(event, ui) {
         toRow: $(this).data("row"),
     }}));
     try {
-        board_model.make_move(from_square, to_square);
+        //board_model.make_move(from_square, to_square);
     } catch (e) {
         cancel_move();
         return;
     }
-    var piece = ui.draggable[0];
-    var cell = $(this);
-    cell.children().remove();
-    $(piece).detach().css({top: 0, left: 0}).appendTo(cell);
+    //var piece = ui.draggable[0];
+    //var cell = $(this);
+    //cell.children().remove();
+    //$(piece).detach().css({top: 0, left: 0}).appendTo(cell);
     var audio = $("#audio").get(0);
     audio.currentTime = 0;
     audio.play();

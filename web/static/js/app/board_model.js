@@ -109,6 +109,22 @@ BoardModel.prototype.make_move = function (square_from, square_to) {
 	}
 	this.set_square(square_to, piece);
 	this.set_square(square_from, EMPTY_SQUARE);
+    if (square_from == "e1" && square_to == "g1") {
+      this.set_square("f1", WHITE_ROOK);
+      this.set_square("h1", EMPTY_SQUARE);
+    }
+    if (square_from == "e1" && square_to == "c1") {
+      this.set_square("d1", WHITE_ROOK);
+      this.set_square("a1", EMPTY_SQUARE);
+    }
+    if (square_from == "e8" && square_to == "g8") {
+      this.set_square("f8", BLACK_ROOK);
+      this.set_square("h8", EMPTY_SQUARE);
+    }
+    if (square_from == "e8" && square_to == "c8") {
+      this.set_square("d8", BLACK_ROOK);
+      this.set_square("a8", EMPTY_SQUARE);
+    }
 }
 
 BoardModel.prototype.get_piece_color = function (piece) {
@@ -415,6 +431,8 @@ BoardModel.prototype.get_moves_of_square = function (square) {
 		if (is_square_movable(this.get_coord(row - 1, col - 1))) {
 			moves.push(coord_to_square(row - 1, col - 1));
 		}
+        moves.push(coord_to_square(row, col - 2));
+        moves.push(coord_to_square(row, col + 2));
 	}
 
 	return moves;
