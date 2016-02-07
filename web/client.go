@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/cenan/mergen/engine"
 	"github.com/gorilla/websocket"
@@ -36,10 +37,13 @@ func (client *Client) Read() {
 			}
 			fmt.Println("User moved: ", move)
 			client.board.MakeMove(move)
-			_, moves := engine.NegaMax(client.board, 3, engine.BLACK)
+			start := time.Now()
+			scr, moves := engine.ParallelNegaMax(client.board, 4, engine.BLACK)
+			elapsed := time.Since(start)
 			fmt.Println(moves[0])
 			client.board.MakeMove(moves[0])
 			client.send <- Message{Name: "move", Data: moves[0].String()}
+			client.send <- Message{Name: "status", Data: fmt.Sprintf("time: %v score: %f", elapsed, scr)}
 		}
 	}
 	client.socket.Close()

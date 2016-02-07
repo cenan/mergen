@@ -1,5 +1,7 @@
 package engine
 
+import "sync"
+
 func (b *Board) Evaluate() (result float32) {
 	result = 0
 	for i := int8(0); i < 8; i += 1 {
@@ -60,4 +62,55 @@ func NegaMax(b *Board, depth int, color Color) (float32, []Move) {
 		}
 	}
 	return max, append([]Move{bestMove}, bestMoves...)
+}
+
+type ScoreAndMoves struct {
+	score float32
+	move  Move
+	moves []Move
+}
+
+func ParallelNegaMax(b *Board, depth int, color Color) (float32, []Move) {
+	moveChan := make(chan ScoreAndMoves)
+	quit := make(chan bool)
+	mvs := []ScoreAndMoves{}
+	go func() {
+		for {
+			select {
+			case m := <-moveChan:
+				mvs = append(mvs, m)
+			case <-quit:
+				break
+			}
+		}
+	}()
+	available_moves := b.findAllMoves(color)
+	var wg sync.WaitGroup
+	wg.Add(len(available_moves))
+	for _, m := range available_moves {
+		b2 := Board{}
+		b2.pieces = b.pieces
+		go func(board *Board, move Move) {
+			defer wg.Done()
+			_ = board.MakeMove(move)
+			score, moves := NegaMax(board, depth-1, color.other())
+			score = -1 * score
+			moveChan <- ScoreAndMoves{
+				score: score,
+				move:  move,
+				moves: moves,
+			}
+		}(&b2, m)
+	}
+	wg.Wait()
+	quit <- true
+	max := float32(-10000000.0)
+	mi := 0
+	for i, sam := range mvs {
+		if sam.score > max {
+			mi = i
+			max = sam.score
+		}
+	}
+	return mvs[mi].score, append([]Move{mvs[mi].move}, mvs[mi].moves...)
 }

@@ -162,12 +162,16 @@ $(function() {
     ws.onmessage = function (evt) {
       var received_msg = evt.data;
       msg = JSON.parse(received_msg);
+      if (msg.name == "move") {
       $(".move-list").append($("<div />").text(msg.data));
       board_model.make_move(msg.data.split(" ")[0], msg.data.split(" ")[1]);
       sync_with_model();
       var audio = $("#audio").get(0);
       audio.currentTime = 0;
       audio.play();
+      } else if (msg.name == "status") {
+        $("div.status").text(msg.data);
+      }
     };
 
     ws.onclose = function() { 
