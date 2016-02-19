@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"text/template"
 
+	_ "net/http/pprof"
+
 	"github.com/cenan/mergen/engine"
 	"github.com/gorilla/websocket"
 )

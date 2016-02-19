@@ -42,9 +42,13 @@ func (client *Client) Read() {
 			scr, moves := engine.ParallelNegaMax(client.board, 4, engine.BLACK)
 			elapsed := time.Since(start)
 			fmt.Println(moves[0])
-			client.board.MakeMove(moves[0])
-			client.send <- Message{Name: "move", Data: moves[0].String()}
-			client.send <- Message{Name: "status", Data: fmt.Sprintf("time: %v score: %f", elapsed, scr)}
+			if scr < -900 {
+				client.send <- Message{Name: "status", Data: "Resign"}
+			} else {
+				client.board.MakeMove(moves[0])
+				client.send <- Message{Name: "move", Data: moves[0].String()}
+				client.send <- Message{Name: "status", Data: fmt.Sprintf("time: %v score: %f", elapsed, scr)}
+			}
 		}
 	}
 	client.socket.Close()
